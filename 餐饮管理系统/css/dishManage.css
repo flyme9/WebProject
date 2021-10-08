@@ -1,0 +1,101 @@
+@import url(./common/backCommon.css);
+
+.box{
+    background: #fff;
+    box-shadow: 0 5px 1px rgba(0, 0, 0, .2);
+    margin: 0 20px 40px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.box h3{
+    color: #495057;
+    font-size: 30px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+.box ul{
+    overflow: hidden;
+}
+.box li{
+    width: 300px;
+    height: 300px;
+    float: left;
+    margin: 0 10px 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+
+}
+.box img{
+    width: 100%;
+    height: 100%;
+}
+.bottom{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: rgba(0, 0, 0, .5);
+    position: absolute;
+    bottom: 0;
+    left: 0;color: #fff;
+    box-sizing: border-box;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+.name{
+    font-size: 20px;
+}
+.price strong{
+    color: #ff8400;
+    font-weight: normal;
+}
+.box .icon-tuijian{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 60px;
+    color: #ff8400;
+}
+
+.edit{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    left: 0;
+    top: 0;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, .7);
+    opacity: 0;
+}
+.edit span{
+    font-size: 80px;
+    color: #fff;
+}
+.edit span:hover{
+    color: #ff8400;
+    cursor: pointer;
+}
+li:hover .edit{
+    opacity: 1;
+    transition: .8s;
+}
+
+.box .add{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+.box .add span{
+    font-size: 200px;
+    color: #ccc;
+    box-sizing: border-box;
+} 
+.box .add:hover{
+    background: #eee;
+    transition: .4s ;
+}

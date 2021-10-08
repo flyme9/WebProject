@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/common/reset.css">
+    <link rel="stylesheet" href="./css/order.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2853093_ke0ncz0y3ve.css">
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="subBar">
+            <a href="#">
+                <img src="./images/logo.png" class="logo" alt="">
+            </a>
+            <div class="massage">
+                <p>欢迎您：kaivon</p>
+                <p>空闲桌位：5桌</p>
+                <p>正在点餐：1桌</p>
+                <p>正在用餐：5桌</p>
+                <p>未选桌子</p>
+            </div>
+            <ul class="action">
+                <li class="ac"><i>0</i> <span class="iconfont icon-gouwuche"></span>以点</li>
+                <li><span class="iconfont icon-zuowei-kexuan"></span>座位</li>
+                <li><span class="iconfont icon-houtaizonglan"></span>后台</li>
+                <li><span class="iconfont icon-tuichu-"></span>退出</li>
+            </ul>
+        </div>
+        <div id="navBar">
+            <ul class="navWrap">
+                <li class="active">
+                    <span class="iconfont icon-diancaidanicon"></span>
+                    <span class="text">以点</span>
+                </li>
+                <li>
+                    <span class="iconfont icon-xiadan"></span>
+                    <span class="text">已下单</span>
+                </li>
+            </ul>
+            <div class="search">
+                <input type="text" placeholder="搜索商品">
+                <button>
+                    <span class="iconfont icon-fangdajing"></span>
+                </button>
+            </div>
+        </div>
+        <div id="content">
+            <!-- 以点页面结构 -->
+            <ul class="orderBox">
+                <li>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td><img src="./images/img_01.jpg" alt=""></td>
+                                <td>菜合</td>
+                                <td>
+                                    <button><span class="iconfont icon-jiahao1"></span></button>
+                                    <span class="num">1</span>
+                                    <button><span class="iconfont icon-jianhao"></span></button>
+                                </td>
+                                <td>￥10x1</td>
+                                <td>备注：</td>
+                                <td>
+                                    <button class="select">
+                                        <span class="iconfont icon-duihao_o"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="foot">
+                        <div>
+                            <span>桌号：<strong>10</strong>号桌</span>
+                            <span>人数：1人</span>
+                            <span>订单号：13464646461615</span>
+                            <button class="addDishes">添菜</button>
+                        </div>
+                        <div>
+                            <span>总消费：￥<strong>98</strong></span>
+                            <button class="pay">下单</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- 已下单页面结构 -->
+            <ul class="orderBox shopped">
+                <li>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>菜品名称</th>
+                                <th>价格/数量</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <img src="./images/img_01.jpg" alt="">
+                                    <span>菜合</span>
+                                </td>
+                                <td>￥10x1份</td>
+                                <td>待上菜</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="foot">
+                        <div>
+                            <span>桌号：<strong>10</strong>号桌</span>
+                            <span>人数：1人</span>
+                            <span>订单号：13464646461615</span>
+                            <span>下单时间：2021-05-13 15:05:06</span>
+                        </div>
+                        <div>
+                            <span>总消费：￥<strong>98</strong></span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+@import url(./common/subBar.css);
+@import url(./common/navBar.css);
+
+body{
+    background: url(../images/productor_bg.jpg) no-repeat top fixed;
+    background-size: cover;
+}
+
+#content{
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    bottom: 20px;
+    left: 300px;
+    background: rgba(255, 255, 255, .2);
+    box-sizing: border-box;
+    padding: 10px;
+    overflow: hidden;
+}
+.orderBox{
+    width: 95%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+.orderBox li{
+    background: rgba(255, 255, 255, .1);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, .2);
+    margin-bottom: 40px;
+    padding: 20px;
+}
+.orderBox img{
+    width: 80px;
+    height: 80px;
+
+}
+.orderBox table{
+    width: 100%;
+
+}
+.orderBox tr{
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+}
+.orderBox td{
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+
+}
+.orderBox td:nth-child(1){
+    width: 5%;
+}
+.orderBox td:nth-child(6){
+    width: 20%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+.orderBox button{
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .5);
+    vertical-align: middle;
+
+}
+.orderBox button span{
+    font-size: 12px;
+}
+.orderBox button.select span{
+    font-size: 20px;
+}
+.orderBox .num{
+    width: 60px;
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, .5);
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+    font-size: 12px;
+    vertical-align: middle;
+}
+.orderBox td:nth-child(4) {
+    font-size: 0;
+}
+.orderBox .foot {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px 0;
+    color: #fff;
+}
+.orderBox .foot span{
+    margin-right: 40px;
+}
+.orderBox .foot strong{
+    color: #ffcb4e;
+    font-size: 20px;
+}
+.orderBox .addDishes{
+    width: 50px;
+    height: 25px;
+    background: #a65335;
+    border-radius: 5px;
+    border: none;
+}
+.orderBox .pay{
+    width: 80px;
+    height: 35px;
+    background: #ff8400;
+    border-radius: 5px;
+    border: none;
+}
+
+
+.shopped li{
+    padding: 0;
+}
+.shopped th{
+    height: 60px;
+    background: rgba(255, 255, 255, .25);
+    color: #fff;
+    text-align: center;
+    font-weight: normal;
+}
+.shopped td:nth-child(2){
+    width: 25%;
+    text-align: left;
+    padding-left: 60px;
+}
+.shopped img{
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.shopped td:nth-child(4){
+    font-size: 16px;
+}
+.shopped .foot{
+    padding: 15px 20px;
+}

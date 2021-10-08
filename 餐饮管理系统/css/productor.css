@@ -1,0 +1,83 @@
+@import url(./common/subBar.css);
+@import url(./common/navBar.css);
+
+body{
+    background: url(../images/productor_bg.jpg) no-repeat top fixed;
+    background-size: cover;
+}
+
+#content{
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    bottom: 20px;
+    left: 300px;
+    background: rgba(255, 255, 255, .2);
+    box-sizing: border-box;
+    padding: 10px;
+    overflow: hidden;
+}
+.foodList{
+    /* 清除换行产生间距 */
+    font-size: 0;
+
+}
+.foodList li{
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.foodList img{
+    width: 350px;
+    height: 350px;
+    cursor: pointer;
+
+}
+.foodList .icon-tuijian{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 60px;
+    color: #ff8400;
+}
+.foodList .bar{
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, .6);
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    line-height: 40px;
+    font-size: 16px;
+    padding:0 15px;
+
+    display: flex;
+    justify-content: space-between;
+}
+.foodList .bar p{
+    display: flex;
+    align-items: center;
+}
+.foodList .rmb{
+    font-size: 14px;
+
+}
+.foodList .price{
+    color: #f0e184;
+    margin: 0 10px;
+}
+.foodList .bar button{
+    width: 20px;
+    height: 20px;
+    background: #ff8400;
+    border-radius: 50%;
+
+}
+.foodList .bar button span{
+    text-align:center;
+    line-height: 20px;
+    font-size: 14px;
+}
