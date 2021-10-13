@@ -1,0 +1,43 @@
+.container{
+    background: #f4f5f5;
+}
+
+.video_con{
+    background: #fff;
+    padding: 0.25rem;
+    min-height: 4.5rem;
+}
+.video_con img{
+    border-radius: 0.1rem;
+}
+.video_con .person_info{
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.person_info img{
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    float: left;
+    margin-right: 0.2rem;
+}
+.person_info h2{
+    float: left;
+    font-size: 0.24rem;
+    font-weight: normal;
+    color: #333;
+}
+.person_info span{
+    float: left;
+    color: #333;
+    font-size: 0.24rem;
+}
+h2{
+    float: left;
+}
+.video_con .talk{
+    float: right;
+    padding-top: 0.17rem;
+}

@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-size: 0.16rem;
+}
+img{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+ul,li,ol{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    color: #333;
+}
+
+.clearfix::after,.clearfix::before{
+    content: '';
+    overflow:hidden;
+    clear: both;
+}
