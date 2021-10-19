@@ -1,0 +1,127 @@
+@charset "utf-8";
+body{
+    background: url(../img/bg.gif) no-repeat;
+    background-size:cover!important
+}
+.banner{
+    width: 900px;
+    height: 250px;
+    background: url(../img/m_bg.jpg) no-repeat;
+    margin: 80px;
+    opacity: 0.7;
+    box-shadow: 10px 15px 15px 0 black;
+    position: relative;
+}
+
+
+.banner ul li{
+    list-style: none;
+    display: inline-block;
+    position: absolute;
+}
+
+.banner li img{
+    border-radius: 50%;
+    cursor: pointer;
+}
+.banner li:nth-child(1){
+    top: 30px;
+    left: 90px;
+}
+.banner li:nth-child(2){
+    top: 140px;
+    left: 160px;
+}
+.banner li:nth-child(3){
+    top: 67px;
+    left: 308px;
+}
+.banner li:nth-child(4){
+    top: 50px;
+    left: 500px;
+}
+.banner li:nth-child(5){
+    top: 160px;
+    left: 580px;
+}
+/* 图片旋转动画 */
+@keyframes img_rotate {
+    form{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+/* 将动画绑定给元素 */
+.banner .active{
+    animation: img_rotate 1s infinite linear;
+}
+
+.music{
+    width: 550px;
+    height: 120px;
+    background: black;
+    position: fixed;
+    left: 0;
+    bottom: 100px;
+    opacity: 0.7;
+    box-shadow: 10px 15px 15px 0 black;
+}
+.music .m_img{
+    margin: 15px 0 0 10px;
+    float: left;
+}
+.music .m_text{
+    float: left;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 50px 0 0 20px;
+}
+.music .m_btn{
+    float: left;
+    position: absolute;
+    right: 50px;
+}
+.music .m_btn a{
+    float: left;
+    width: 35px;
+    height: 35px;
+    background: url(../img/player_bg.png);/* 添加播放器图片 */
+    margin: 50px 0 0 20px;
+}
+/* 编写js代码时，进行切换类名，改变图标 */
+.music .m_btn .m_pause{background-position: -292px -93px;}
+.music .m_btn .m_pause:hover{background-position: -334px -93px;}
+
+.music .m_btn .m_prev{
+    background-position: -68px 0;
+}
+.music .m_btn .m_prev:hover{
+    background-position: -68px -32px;
+}
+.music .m_btn .m_play{
+    background-position: -104px -5px;
+}
+.music .m_btn .m_play:hover{
+    background-position: -104px -47px;
+}
+.music .m_btn .m_next{
+    background-position: -145px 0;
+}
+.music .m_btn .m_next:hover{
+    background-position: -145px -32px;
+}
+.music .m_close{
+    float: right;
+    width: 20px;
+    height: 120px;
+    background: url(../img/player_bg.png);
+    cursor: pointer;
+    margin-top: 2px;
+}
+
+.music .m_open{
+    background-position: -45px 0;
+}
