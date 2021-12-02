@@ -1,40 +1,19 @@
 <template>
     <div class="movie_body">
         <ul>
-            <li>
-                <div class="pic_show"><img src="/images/movie_1.jpg"></div>
+            <li v-for="item in movieList" :key="item.id">
+                <div class="pic_show"><img :src="item.img | imgFilter('128.180')"></div>
                 <div class="info_list">
-                    <h2>无名之辈</h2>
-                    <p>观众评 <span class="grade">9.2</span></p>
-                    <p>主演: 陈建斌,任素汐,潘斌龙</p>
-                    <p>今天55家影院放映607场</p>
+                    <h2>{{item.nm}}
+                        <img v-if="item.ver.startsWith('IMAX 2D')" src="@/assets/v2dimax.png" alt="">
+                        <img v-else-if="item.ver.startsWith('IMAX 3D')" src="@/assets/v3dimax.png" alt="">
+                    </h2>
+                    <p>观众评 <span class="grade">{{item.mk}}</span></p>
+                    <p>{{item.desc}}</p>
+                    <p>{{item.showInfo}}</p>
                 </div>
-                <div class="btn_mall">
-                    购票
-                </div>
-            </li>
-            <li>
-                <div class="pic_show"><img src="/images/movie_1.jpg"></div>
-                <div class="info_list">
-                    <h2>无名之辈</h2>
-                    <p>观众评 <span class="grade">9.2</span></p>
-                    <p>主演: 陈建斌,任素汐,潘斌龙</p>
-                    <p>今天55家影院放映607场</p>
-                </div>
-                <div class="btn_mall">
-                    购票
-                </div>
-            </li>
-            <li>
-                <div class="pic_show"><img src="/images/movie_1.jpg"></div>
-                <div class="info_list">
-                    <h2>无名之辈</h2>
-                    <p>观众评 <span class="grade">9.2</span></p>
-                    <p>主演: 陈建斌,任素汐,潘斌龙</p>
-                    <p>今天55家影院放映607场</p>
-                </div>
-                <div class="btn_mall">
-                    购票
+                <div class="btn_mall" :style="{ backgroundColor:item.showStateButton.color}">
+                    {{item.showStateButton.content}}
                 </div>
             </li>
         </ul>
@@ -42,8 +21,23 @@
 </template>
 
 <script>
+
 export default {
-    name:'NowPlaying'
+    name:'NowPlaying',
+    data(){
+        return{
+            movieList:[]
+        }
+    },
+    // 分页懒加载 https://i.maoyan.com/ajax/moreComingList?token=&movieIds=1291076,1357983,30932,1355028,1413176,1289358,1446129,1417305,1355569,1444433&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10
+
+    mounted () {
+        this.axios.get('/api/mmdb/movie/v3/list/hot.json?ct=%E4%B8%8A%E6%B5%B7&ci=10&channelId=4')
+            .then(res=>{
+                this.movieList=res.data.data.hot
+                console.log(this.movieList)
+            })
+    }
 }
 </script>
 
