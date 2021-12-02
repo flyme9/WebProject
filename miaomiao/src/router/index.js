@@ -13,7 +13,7 @@ const routes = [
   // 路由重定向
   {
     path:'/*',
-    redirect: '/movie/nowPlaying'
+    redirect: '/movie'
   }
 ]
 
