@@ -9,13 +9,13 @@
         <div class="search_result">
             <h3>电影/电视剧/综艺</h3>
             <ul>
-                <li>
-                    <div class="img"><img src="/images/movie_1.jpg"></div>
+                <li v-for="item in movieList" :key="item.id">
+                    <div class="img"><img :src="item.img"></div>
                     <div class="info">
-                        <p><span>无名之辈</span><span>8.5</span></p>
-                        <p>A Cool Fish</p>
-                        <p>剧情,喜剧,犯罪</p>
-                        <p>2018-11-16</p>
+                        <p><span>{{item.nm}}</span><span>{{item.sc}}</span></p>
+                        <p>{{item.enm}}</p>
+                        <p>{{item.cat}}</p>
+                        <p>{{item.rt}}</p>
                     </div>
                 </li>
             </ul>
@@ -32,15 +32,37 @@ export default {
             movieList:[]
         }
     },
+    methods:{
+        // axios防止多次请求
+        cancelRequest(){
+            if(typeof this.source === 'function'){
+                this.source('终止请求')
+            }
+        }
+    },
     watch: {
         message(newVal){
-            this.axios.get('/apollo/ajax/search?kw=a&cityId=10&stype=-1')
-                .then(res=>{
-                    console.log(res)
+            // axios防止多次请求
+            this.cancelRequest()
+            this.axios.get(`/apollo/ajax/search?kw=${newVal}&cityId=10&stype=-1`,{
+                cancelToken: new this.axios.CancelToken((c)=>{
+                    console.log('CancelToken')
+                    this.source=c
+                })
+            }).then(res=>{
+                    console.log(res.data.movies.list)
+                    this.movieList = res.data.movies.list
+            }).catch((err)=>{
+                // 函数节流
+                if(this.axios.isCancel(err)){
+                    // 请求被取消，返回的是取消的message
+                    console.log('Rquest canceled',err.message)
+                }else{
+                    console.log(err)
+                }
             })
         }
     }
-    // https://i.maoyan.com/apollo/ajax/search?kw=a&cityId=10&stype=-1
 }
 </script>
 

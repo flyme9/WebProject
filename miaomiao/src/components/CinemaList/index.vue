@@ -1,88 +1,19 @@
 <template>
     <div class="cinema_body">
         <ul>
-            <li>
+            <li v-for="item in cinemaList" :key="item.id">
                 <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
+                    <span>{{item.nm}}</span>
+                    <span class="q"><span class="price">{{item.sellPrice}}</span> 元起</span>
                 </div>
                 <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
+                    <span>{{item.addr}}</span>
+                    <span>{{item.distance}}</span>
                 </div>
                 <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
-                </div>
-            </li>
-            <li>
-                <div>
-                    <span>大地影院(澳东世纪店)</span>
-                    <span class="q"><span class="price">22.9</span> 元起</span>
-                </div>
-                <div class="address">
-                    <span>金州区大连经济技术开发区澳东世纪3层</span>
-                    <span>1763.5km</span>
-                </div>
-                <div class="card">
-                    <div>小吃</div>
-                    <div>折扣卡</div>
+                    <div v-for="(itemCard,key) in item.tag" v-if="itemCard===1" :key="key" :class="key | classCard">
+                        {{key | formatCard}}
+                    </div>
                 </div>
             </li>
         </ul>
@@ -91,7 +22,49 @@
 
 <script>
 export default {
-    name:'CinemaList'
+    name:'CinemaList',
+    data () {
+        return {
+            cinemaList:[]
+        }
+    },
+    mounted () {
+        this.axios.get('/ajax/moreCinemas?movieId=0&day=2021-12-03&offset=0&limit=20&districtId=-1&lineId=-1&hallType=-1&brandId=-1&serviceId=-1&areaId=-1&stationId=-1&item=&updateShowDay=true&reqId=1638535550609&cityId=10&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10')
+        .then(res=>{
+            console.log(res.data.cinemas.cinemas)
+            this.cinemaList=res.data.cinemas.cinemas
+        })
+    },
+    filters: {
+        formatCard(key){
+            var card=[
+                {key:'allowRefund',value:'退'},
+                {key:'endorse',value:'改签'},
+                {key:'sell',value:'折扣'},
+                {key:'snack',value:'小吃'},
+            ]
+            for(var i=0;i<card.length;i++){
+                if(card[i].key==key){
+                    return card[i].value
+                }
+            }
+            return ''
+        },
+        classCard(key){
+            var card=[
+                {key:'allowRefund',value:'bl'},
+                {key:'endorse',value:'bl'},
+                {key:'sell',value:'or'},
+                {key:'snack',value:'or'},
+            ]
+            for(var i=0;i<card.length;i++){
+                if(card[i].key==key){
+                    return card[i].value
+                }
+            }
+            return ''
+        }
+    }
 }
 </script>
 
