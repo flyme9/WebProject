@@ -1,5 +1,6 @@
 <template>
     <div class="cinema_body">
+        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
         <Scroller :key="cinemaList">
             <ul>
                 <li v-for="item in cinemaList" :key="item.id">
@@ -27,14 +28,22 @@ export default {
     name:'CinemaList',
     data () {
         return {
-            cinemaList:[]
+            cinemaList:[],
+            isLoading:true,
+            prevCityId:-1
+
         }
     },
-    mounted () {
-        this.axios.get('/ajax/moreCinemas?movieId=0&day=2021-12-03&offset=0&limit=20&districtId=-1&lineId=-1&hallType=-1&brandId=-1&serviceId=-1&areaId=-1&stationId=-1&item=&updateShowDay=true&reqId=1638535550609&cityId=10&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10')
+    activated () {
+        var cityId = this.$store.state.city.id
+        if(this.prevCityId === cityId) {return}
+        this.isLoading=true
+        this.axios.get(`/ajax/moreCinemas?movieId=0&day=2021-12-03&offset=0&limit=20&districtId=-1&lineId=-1&hallType=-1&brandId=-1&serviceId=-1&areaId=-1&stationId=-1&item=&updateShowDay=true&reqId=1638535550609&cityId=${cityId}&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10`)
         .then(res=>{
             console.log(res.data.cinemas.cinemas)
             this.cinemaList=res.data.cinemas.cinemas
+            this.isLoading=false
+            this.prevCityId=cityId
         })
     },
     filters: {

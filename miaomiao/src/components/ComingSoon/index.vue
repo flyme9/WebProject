@@ -1,5 +1,6 @@
 <template>
     <div class="movie_body">
+        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
         <Scroller :key="comingList">
             <ul>
                 <li v-for="item in comingList" :key="item.id">
@@ -24,16 +25,23 @@ export default {
     name:'ComingSoon',
     data(){
         return{
-            comingList:[]
+            comingList:[],
+            isLoading:true,
+            prevCityId:-1
         }
     },
-    mounted(){
+    activated(){
+        var cityId = this.$store.state.city.id
+        if(this.prevCityId === cityId) {return}
+        this.isLoading=true
         this.axios.get('/data/comingSoon.json')
             .then(res =>{
                 if(res.data.success){
                     this.comingList=res.data.coming
+                    this.isLoading=false
+                    this.prevCityId=cityId
                 }
-                console.log(this.comingList)
+                // console.log(this.comingList)
             })
     }
 }
