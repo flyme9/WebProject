@@ -1,5 +1,6 @@
 <template>
     <div class="movie_body" ref="movie_body">
+        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
         <Scroller :key="movieList" :handleToScroll='handleToScroll' :handleToTouchEnd='handleToTouchEnd'>
             <ul>
                 <li class="pullDown">{{pullDownMsg}}</li>
@@ -18,7 +19,7 @@
                     </div>
                     <div class="btn_mall" :style="{ backgroundColor:item.showStateButton.color}">
                         {{item.showStateButton.content}}
-                    </div>
+                    </div> 
                 </li>
             </ul>
         </Scroller>
@@ -31,17 +32,24 @@ export default {
     data(){
         return{
             movieList:[],
-            pullDownMsg:''
+            pullDownMsg:'',
+            isLoading:true,
+            prevCityId:-1
         }
     },
     // 分页懒加载 https://i.maoyan.com/ajax/moreComingList?token=&movieIds=1291076,1357983,30932,1355028,1413176,1289358,1446129,1417305,1355569,1444433&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10
-
-    mounted () {
-        this.axios.get('/api/mmdb/movie/v3/list/hot.json?ct=%E4%B8%8A%E6%B5%B7&ci=10&channelId=4')
+    
+    activated () {
+        var cityId = this.$store.state.city.id
+        if(this.prevCityId === cityId) {return}
+        this.isLoading=true
+        console.log(112)
+        this.axios.get(`/api/mmdb/movie/v3/list/hot.json?ct=%E4%B8%8A%E6%B5%B7&ci=${cityId}&channelId=4`)
             .then(res=>{
                 this.movieList=res.data.data.hot
                 console.log(this.movieList)
-
+                this.isLoading=false
+                this.prevCityId=cityId
             })
     },
     methods:{

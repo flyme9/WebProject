@@ -42,9 +42,10 @@ export default {
     },
     watch: {
         message(newVal){
+            var cityId = this.$store.state.city.id
             // axios防止多次请求
             this.cancelRequest()
-            this.axios.get(`/apollo/ajax/search?kw=${newVal}&cityId=10&stype=-1`,{
+            this.axios.get(`/apollo/ajax/search?kw=${newVal}&cityId=${cityId}&stype=-1`,{
                 cancelToken: new this.axios.CancelToken((c)=>{
                     console.log('CancelToken')
                     this.source=c

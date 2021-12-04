@@ -5,6 +5,9 @@ import store from './store'
 
 import Scroller from '@/components/Scroller'
 import axios from 'axios'
+import Vant from 'vant'
+import 'vant/lib/index.css'
+Vue.use(Vant)
 
 // 将axios绑定在vue原型上
 Vue.prototype.axios=axios
@@ -13,6 +16,7 @@ Vue.filter('imgFilter',(url,arg)=>{
   return url.replace(/w\.h/,arg)
 })
 
+Vue.component('Scroller',Scroller)
 Vue.component('Scroller',Scroller)
 
 Vue.config.productionTip = false
