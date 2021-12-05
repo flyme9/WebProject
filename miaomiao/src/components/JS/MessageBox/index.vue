@@ -3,8 +3,8 @@
         <h2>{{title}}</h2>
         <p>{{content}}</p>
         <div>
-            <div @touchstart="handleCancel">{{cancel}}</div>
-            <div @touchstart="handleOk">{{ok}}</div>
+            <div @click="handleCancel">{{cancel}}</div>
+            <div @click="handleOk">{{ok}}</div>
         </div>
     </div>
 </template>

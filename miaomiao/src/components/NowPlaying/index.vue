@@ -13,7 +13,7 @@
                             <img v-if="item.ver.startsWith('IMAX 2D')" src="@/assets/v2dimax.png" alt="">
                             <img v-else-if="item.ver.startsWith('IMAX 3D')" src="@/assets/v3dimax.png" alt="">
                         </h2>
-                        <p>观众评 <span class="grade">{{item.mk}}</span></p>
+                        <p>观众评分<span class="grade">{{item.mk}}</span></p>
                         <p>{{item.desc}}</p>
                         <p>{{item.showInfo}}</p>
                     </div>
