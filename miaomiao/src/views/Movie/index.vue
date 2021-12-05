@@ -1,6 +1,5 @@
 <template>
     <div id="main">
-        <MessageBox />
         <Header title="喵喵电影" />
         <div id="content">
 			<div class="movie_menu">
@@ -26,13 +25,37 @@
 <script>
 import Header from '@/components/Header'
 import TabBar from '@/components/TabBar'
-import MessageBox from '@/components/JS/MessageBox'
+import {messageBox} from '@/components/JS'
 export default {
     name:'Movie',
     components: {
         Header,
-        TabBar,
-        MessageBox
+        TabBar
+    },
+    mounted(){
+        // https://hm.baidu.com/hm.js?703e94591e87be68cc8da0da7cbd0be2
+        // https://apimobile.meituan.com/group/v1/city/latlng/28.660401,115.780527?tag=1&callback=jsonpatzur9ng
+        setTimeout(() => {
+            this.axios.get('/data/cityOrientation.json')
+            .then(res=>{
+                console.log(res.data)
+                var CityName=res.data.data.city
+                var CityId=res.data.data.id
+                if(this.$store.state.city.id==CityId){return}
+                messageBox({
+                    title:'当前定位',
+                    content:CityName,
+                    cancel:'取消定位',
+                    ok:'确定',
+                    handleOk(){
+                        console.log('handleOk')
+                        window.localStorage.setItem('nowNm',CityName)
+                        window.localStorage.setItem('nowId',CityId)
+                        window.location.reload()
+                    }
+                })
+            })
+        }, 3000);
     }
 }
 </script>
