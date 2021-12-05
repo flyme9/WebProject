@@ -17,7 +17,6 @@ Vue.filter('imgFilter',(url,arg)=>{
 })
 
 Vue.component('Scroller',Scroller)
-Vue.component('Scroller',Scroller)
 
 Vue.config.productionTip = false
 
