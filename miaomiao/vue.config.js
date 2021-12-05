@@ -14,6 +14,10 @@ module.exports = {
       '/ajax':{
         target: 'https://i.maoyan.com',
         changeOrigin: true,
+      },
+      'hm.js':{
+        target:'https://hm.baidu.com/',
+        changeOrigin:true
       }
     }
   }

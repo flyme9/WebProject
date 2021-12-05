@@ -1,10 +1,10 @@
 <template>
     <div class="messageBox">
-        <h2>定位</h2>
-        <p>北京</p>
+        <h2>{{title}}</h2>
+        <p>{{content}}</p>
         <div>
-            <div>取消</div>
-            <div>切换定位</div>
+            <div @touchstart="handleCancel">{{cancel}}</div>
+            <div @touchstart="handleOk">{{ok}}</div>
         </div>
     </div>
 </template>
@@ -26,7 +26,7 @@ export default {
         position: absolute;
         left: 50%;
         top: 50%;
-        margin: -60px 0 0 -100px;
+        transform: translate(-50%,-50%);
         z-index: 999;
     }
     .messageBox h2{
