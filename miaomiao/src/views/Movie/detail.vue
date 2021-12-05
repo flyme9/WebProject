@@ -29,14 +29,14 @@
             </div>
 
             <div class="detail_player swiper-container" ref="detail_player">
-                <ul class="swiper-wrapper">
-                    <li class="swiper-slide" v-for="(item,index) in detailMovie.photos" :key="index">
-                        <div>
-                            <img :src="item | imgFilter('180.112')" alt="">
-                        </div>
-                        <p>陈建斌</p>
-                        <p>马先勇</p>
-                    </li>
+				<ul class="swiper-wrapper">
+					<li class="swiper-slide" v-for="(item,index) in detailMovie.photos" :key="index">
+						<div>
+							<img :src="item | imgFilter('180.112')" alt="">
+						</div>
+						<p>陈建斌</p>
+						<p>马先勇</p>
+					</li>
                 </ul>
             </div>
 
@@ -111,4 +111,5 @@ export default {
     .detail_player .swiper-slide{ width:70px; margin-right: 20px; text-align: center; font-size: 14px;}
     .detail_player .swiper-slide img{ width:100%; margin-bottom: 5px;}
     .detail_player .swiper-slide p:nth-of-type(2){ color:#999;}
+
 </style>
