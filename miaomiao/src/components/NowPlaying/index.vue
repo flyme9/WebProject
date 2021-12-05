@@ -4,7 +4,7 @@
         <Scroller :key="movieList" :handleToScroll='handleToScroll' :handleToTouchEnd='handleToTouchEnd'>
             <ul>
                 <li class="pullDown">{{pullDownMsg}}</li>
-                <li v-for="item in movieList" :key="item.id" @click="handleToDetail">
+                <li v-for="item in movieList" :key="item.id" @click="handleToDetail(item.id)">
                     <div class="pic_show" >
                         <img :src="item.img | imgFilter('128.180')">
                     </div>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="btn_mall" :style="{ backgroundColor:item.showStateButton.color}">
                         {{item.showStateButton.content}}
-                    </div> 
+                    </div>
                 </li>
             </ul>
         </Scroller>
@@ -43,18 +43,19 @@ export default {
         var cityId = this.$store.state.city.id
         if(this.prevCityId === cityId) {return}
         this.isLoading=true
-        console.log(112)
+        // console.log(112)
         this.axios.get(`/api/mmdb/movie/v3/list/hot.json?ct=%E4%B8%8A%E6%B5%B7&ci=${cityId}&channelId=4`)
             .then(res=>{
                 this.movieList=res.data.data.hot
-                console.log(this.movieList)
+                // console.log(this.movieList)
                 this.isLoading=false
                 this.prevCityId=cityId
             })
     },
     methods:{
-        handleToDetail(){
-            console.log('handleToDetail')
+        handleToDetail(movieId){
+            // console.log('handleToDetail',id)
+            this.$router.push(`/movie/detail/1/${movieId}`)
         },
         handleToScroll(pos){
             if(pos.y>30){
@@ -69,7 +70,6 @@ export default {
                 }, 3000);
             }
         }
-
     }
 }
 </script>

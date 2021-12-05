@@ -3,7 +3,7 @@
         <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
         <Scroller :key="comingList">
             <ul>
-                <li v-for="item in comingList" :key="item.id">
+                <li v-for="item in comingList" :key="item.id" @click="handleToDetail(item.id)">
                     <div class="pic_show"><img :src="item.img"></div>
                     <div class="info_list">
                         <h2>{{item.nm}}</h2>
@@ -28,6 +28,12 @@ export default {
             comingList:[],
             isLoading:true,
             prevCityId:-1
+        }
+    },
+    methods:{
+        handleToDetail(movieId){
+            // console.log(id)
+            this.$router.push(`/movie/detail/2/${movieId}`)
         }
     },
     activated(){
@@ -60,4 +66,10 @@ export default {
     .movie_body .info_list img{ width:50px; position: absolute; right:10px; top: 5px;}
     .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
     .movie_body .btn_pre{ background-color: #3c9fe6;}
+
+    #content .detail_intro{ padding: 10px;}
+    #content .detail_player{ margin:20px;}
+    .detail_player .swiper-slide{ width:70px; margin-right: 20px; text-align: center; font-size: 14px;}
+    .detail_player .swiper-slide img{ width:100%; margin-bottom: 5px;}
+    .detail_player .swiper-slide p:nth-of-type(2){ color:#999;}
 </style>
