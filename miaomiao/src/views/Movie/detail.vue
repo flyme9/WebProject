@@ -3,60 +3,77 @@
         <Header title="影片详情">
             <i class="iconfont icon-right" @click="handleBack"></i>
         </Header>
-        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
-        <div v-else id="content" class="contentDetail">
-
+        <div id="content" class="contentDetail">
             <div class="detail_list" >
-                <div class="detail_list_bg" :style="{ 'background-image':'url('+ detailMovie.img +')'}"></div>
+                <div class="detail_list_bg" :style="{backgroundImage:'url('+detailMovie.poster+')'}"></div>
                 <div class="detail_list_filter"></div>
                 <div class="detail_list_content">
                     <div class="detail_list_img">
-                        <img :src="detailMovie.img" alt="">
+                        <img :src="detailMovie.poster" alt="img">
                     </div>
                     <div class="detail_list_info">
-                        <h2>{{detailMovie.nm}}</h2>
-                        <p>{{detailMovie.enm}}</p>
-                        <p>{{detailMovie.sc}}</p>
-                        <p>{{detailMovie.cat}}</p>
-                        <p>{{detailMovie.src}} / {{detailMovie.dur}}分钟</p>
-                        <p>{{detailMovie.pubDesc}}</p>
+                        <h2>{{detailMovie.name}}</h2>
+                        <p>{{detailMovie.category}}</p>
+                        <p>上映时间：{{detailMovie.premiereAt | timerFilter}}</p>
+                        <p>{{detailMovie.nation}} / {{detailMovie.runtime}}分钟</p>
                     </div>
                 </div>
             </div>
-
-            <div class="detail_intro">
-                <p>{{detailMovie.dra}}</p>
+            
+            <div class="synopsis" :class="isHidden?'hidden':''">{{detailMovie.synopsis}}</div>
+            <div style="text-align:center;font-size: 14px;color: #797d82;padding:10px 0" @click="isHidden=!isHidden">
+                <span v-if="isHidden">展开</span>
+                <span v-else>收起</span>
+                <i @click="isHidden=!isHidden" class="iconfont" :class="isHidden?'icon-moreunfold':'icon-less'"></i>
             </div>
 
-            <div class="detail_player swiper-container" ref="detail_player">
-				<ul class="swiper-wrapper">
-					<li class="swiper-slide" v-for="(item,index) in detailMovie.photos" :key="index">
-						<div>
-							<img :src="item | imgFilter('180.112')" alt="">
-						</div>
-						<p>陈建斌</p>
-						<p>马先勇</p>
-					</li>
-                </ul>
+            <!-- 演职人员信息 -->
+            <div class="title">演职人员</div>
+            <div class="actors">
+                <detail-swiper :perview="3.5" name="swiperActors">
+                    <detail-swiper-item v-for="(data,index) in detailMovie.actors" :key="index">
+                        <div :style="{backgroundImage:'url(' + data.avatarAddress+')'}" class="avatarImg"></div>
+                        <div style="padding-top: 5px;">{{data.name}}</div>
+                        <div style="color:#797d82;font-size:12px;padding-top: 5px;">{{data.role}}</div>
+                    </detail-swiper-item>
+                </detail-swiper>
             </div>
 
+            <!-- 剧照 -->
+            <div class="title">剧照</div>
+            <div class="photos" v-if="detailMovie.photos">
+                <detail-swiper  :perview="2.2" name="swiperPhotos">
+                    <detail-swiper-item v-for="(data,index) in detailMovie.photos" :key="index">
+                        <div :style="{backgroundImage:'url(' + data +')'}" class="avatarImg" @click="handlePreview(index)"></div>
+                    </detail-swiper-item>
+                </detail-swiper>
+            </div>
+        
+            <div v-else style="text-align: center;height: 115px; line-height: 58px;">
+                暂无剧照
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
+import detailSwiper from '@/components/Detail/DetailSwiper.vue'
+import DetailSwiperItem from '@/components/Detail/DetailSwiperItem.vue'
+import http from '@/util/http'
 export default {
     name:'Detail',
     data () {
         return {
             detailMovie:{},
-            isLoading:true
+            isHidden:true
         }
     },
     components:{
         Header,
-        Swiper
+        Swiper,
+        detailSwiper,
+        DetailSwiperItem
     },
     props:['movieId'],
     methods:{
@@ -65,35 +82,23 @@ export default {
         }
     },
     mounted(){
-        console.log(this.movieId)
-        this.axios.get('/data/detailInfo.json')
-        .then(res=>{
-            console.log(res.data.detailMovie)
-            this.detailMovie=res.data.detailMovie
-            this.isLoading=false
-            this.$nextTick(()=>{
-                new Swiper(this.$refs.detail_player, {
-                    slidesPerView : 'auto',
-                    freeMode : true,
-                    freeModeSticky: true
-                });
-            })
+        http({
+            url:`/gateway?filmId=${this.movieId}&k=1570676`,
+            headers:{
+                'X-Host': 'mall.film-ticket.film.info'
+            }
+        }).then(res=>{
+            console.log(res.data.data.film)
+            this.detailMovie=res.data.data.film
         })
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #detailContainer{position:absolute;left: 0;top: 0;z-index: 999;width: 100%;min-height: 100%;background: #fff;}
     #detailContainer.slide-enter-active{animation: .6s detailMove ease-in-out;}
-    @keyframes detailMove{
-        0%{
-            transform: translateX(100%);
-        }
-        100%{
-            transform: translateX(0);
-        }
-    }
+    @keyframes detailMove{0%{transform: translateX(100%);}100%{transform: translateX(0);}}
 
     #content.contentDetail{ display: block; margin-bottom:0;}
     #content .detail_list{ height:200px; width:100%; position: relative; overflow: hidden;}
@@ -105,11 +110,43 @@ export default {
     .detail_list .detail_list_info{ margin-top: 20px;}
     .detail_list .detail_list_info h2{ font-size: 20px; color:white; font-weight: normal; line-height: 40px;}
     .detail_list .detail_list_info p{ color:white; line-height: 20px; font-size: 14px; color:#ccc;}
+    
+    #content .title{font-size: 18px; padding: 15px;}
 
-    #content .detail_intro{ padding: 10px;}
-    #content .detail_player{ margin:20px;}
-    .detail_player .swiper-slide{ width:70px; margin-right: 20px; text-align: center; font-size: 14px;}
-    .detail_player .swiper-slide img{ width:100%; margin-bottom: 5px;}
-    .detail_player .swiper-slide p:nth-of-type(2){ color:#999;}
+    .synopsis{
+        font-size: 14px;
+        color: #797d82;
+        margin-top: 13px;
+        line-height: 20px;
+        padding: 0 15px;
+        text-align: justify;
+    }
+    .hidden{
+      overflow: hidden;
+      height: 38px;
+    }
+
+    .actors{
+        .swiperActors{
+            padding-left: 15px;
+            font-size: 12px;
+            text-align: center;
+            .avatarImg{
+                width: 85px;
+                height: 85px;
+                background-position: center;
+                background-size: cover;
+            }
+        }
+    }
+    .photos{
+        padding-left: 15px;
+            .avatarImg{
+            width: 150px;
+            height: 100px;
+            background-position: center;
+            background-size: cover;
+        }
+    }
 
 </style>

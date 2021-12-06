@@ -2,7 +2,7 @@
     <div class="search_body">
         <div class="search_input">
             <div class="search_input_wrapper">
-                <i class="iconfont icon-sousuo"></i>
+                <i class="iconfont icon-search"></i>
                 <input type="text" v-model="message">
             </div>
         </div>
@@ -24,12 +24,14 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name:'Search',
     data () {
         return {
             message:'',
-            movieList:[]
+            movieList:[],
+            cityId:null
         }
     },
     methods:{
@@ -42,12 +44,11 @@ export default {
     },
     watch: {
         message(newVal){
-            var cityId = this.$store.state.city.id
+            this.cityId = this.$store.state.city.id
             // axios防止多次请求
             this.cancelRequest()
-            this.axios.get(`/apollo/ajax/search?kw=${newVal}&cityId=${cityId}&stype=-1`,{
-                cancelToken: new this.axios.CancelToken((c)=>{
-                    console.log('CancelToken')
+            axios.get(`/apollo/ajax/search?kw=${newVal}&cityId=10&stype=-1`,{
+                cancelToken: new axios.CancelToken((c)=>{
                     this.source=c
                 })
             }).then(res=>{
@@ -55,7 +56,7 @@ export default {
                     this.movieList = res.data.movies.list
             }).catch((err)=>{
                 // 函数节流
-                if(this.axios.isCancel(err)){
+                if(axios.isCancel(err)){
                     // 请求被取消，返回的是取消的message
                     console.log('Rquest canceled',err.message)
                 }else{

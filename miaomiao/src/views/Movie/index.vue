@@ -2,18 +2,27 @@
     <div id="main">
         <Header title="喵喵电影" />
         <div id="content">
-			<div class="movie_menu">
-				<router-link tag="div" to="/movie/city" class="city_name">
-					<span>{{$store.state.city.nm}}</span><i class="iconfont icon-lower-triangle"></i>
-				</router-link>
-				<div class="hot_swtich">
-					<router-link tag="div" to="/movie/nowPlaying" class="hot_item">正在热映</router-link>
-					<router-link tag="div" to="/movie/comingSoon" class="hot_item">即将上映</router-link>
-				</div>
-				<router-link tag="div" to="/movie/search" class="search_entry">
-					<i class="iconfont icon-sousuo"></i>
-				</router-link>
-			</div>
+            <div class="movie_menu">
+                <router-link to="/movie/city" custom v-slot="{navigate,isActive}">
+                    <div class="city_name" :class="isActive?'router-link-active':''" @click="navigate">
+                        <span>{{$store.state.city.nm}}</span>
+                        <i class="iconfont icon-lower-triangle"></i>
+                    </div>
+                </router-link>
+                <div class="hot_swtich">
+                    <router-link to="/movie/nowPlaying" custom v-slot="{navigate,isActive}">
+                        <div class="hot_item" :class="isActive?'router-link-active':''" @click="navigate">正在热映</div> 
+                    </router-link>
+                    <router-link to="/movie/comingSoon" custom v-slot="{navigate,isActive}">
+                        <div class="hot_item" :class="isActive?'router-link-active':''" @click="navigate">即将上映</div>
+                    </router-link>
+                </div>
+                <router-link to="/movie/search" custom v-slot="{navigate,isActive}">
+                    <div class="search_entry" :class="isActive?'router-link-active':''" @click="navigate">
+                        <i class="iconfont icon-search"></i>
+                    </div>
+                </router-link>
+            </div>
             <keep-alive>
                 <router-view />
             </keep-alive>
@@ -34,8 +43,6 @@ export default {
         TabBar
     },
     mounted(){
-        // https://hm.baidu.com/hm.js?703e94591e87be68cc8da0da7cbd0be2
-        // https://apimobile.meituan.com/group/v1/city/latlng/28.660401,115.780527?tag=1&callback=jsonpatzur9ng
         setTimeout(() => {
             this.axios.get('/data/cityOrientation.json')
             .then(res=>{
@@ -73,5 +80,5 @@ export default {
     .movie_menu .search_entry{ margin-right:20px; height:100%; line-height: 45px;}
     .movie_menu .search_entry.active{ color: #ef4238; border-bottom: 2px #ef4238 solid;}
     .movie_menu .search_entry.router-link-active{ color: #ef4238; border-bottom: 2px #ef4238 solid;}
-    .movie_menu .search_entry i{  font-size:24px; color:red;}
+    .movie_menu .search_entry i{  font-size:20px; color:red;}
 </style>

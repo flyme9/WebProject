@@ -1,19 +1,18 @@
 <template>
     <div class="city_body">
-        <Scroller class="city_list" ref="city_list" :key="hotList">
-            <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
+        <Scroller class="city_list" ref="city_list">
             <div>
                 <div class="city_hot">
                     <h2>热门城市</h2>
                     <ul class="clearfix">
-                        <li v-for="item in hotList" :key="item.id" @click="handleToCity(item.nm,item.id)">{{item.nm}}</li>
+                        <li v-for="item in hotList" :key="item.cityId" @click="handleToCity(item.name,item.cityId)">{{item.name}}</li>
                     </ul>
                 </div>
                 <div class="city_sort" ref="city_sort">
                     <div v-for="item in cityList" :key="item.index">
                         <h2>{{item.index}}</h2>
                         <ul>
-                            <li v-for="cityItem in item.list" :key="cityItem.id" @click="handleToCity(cityItem.nm,cityItem.id)">{{cityItem.nm}}</li>
+                            <li v-for="cityItem in item.list" :key="cityItem.cityId" @click="handleToCity(cityItem.name,cityItem.cityId)">{{cityItem.name}}</li>
                         </ul>
                     </div>
                 </div>
@@ -28,14 +27,13 @@
 </template>
 
 <script>
-
+import http from '@/util/http'
 export default {
     name:'City',
     data(){
         return{
             cityList:[],
             hotList:[],
-            isLoading:true
         }
     },
     mounted(){
@@ -45,39 +43,27 @@ export default {
         if(cityList && hotList){
             this.cityList=JSON.parse(cityList)
             this.hotList=JSON.parse(hotList)
-            this.isLoading=false
         }else{
-            this.axios.get('/api/dianying/cities.json')
-                .then(res=> {
-                    this.isLoading=false
-                    var cities = res.data.cts
-                    // console.log(cities)
-                    var {cityList,hotList} = this.formatCityList(cities)
-                    this.cityList=cityList
-                    this.hotList=hotList
-    
-                    // 本地存储
-                    window.localStorage.setItem('cityList',JSON.stringify(cityList))
-                    window.localStorage.setItem('hotList',JSON.stringify(hotList))
-                })
+            http({
+                url: '/gateway?k=4343038',
+                headers: {
+                    'X-Host': 'mall.film-ticket.city.list'
+                }
+            }).then(res => {
+                var cities = res.data.data.cities
+                var {cityList,hotList} = this.formatCityList(cities)
+                this.cityList=cityList
+                this.hotList=hotList
+                // 本地存储
+                window.localStorage.setItem('cityList',JSON.stringify(cityList))
+                window.localStorage.setItem('hotList',JSON.stringify(hotList))
+            })
         }
     },
     methods:{
         formatCityList(cities){
             var cityList=[]
-            var hotList=[
-                {id:1,nm:'北京',py:"beijing"},
-                {id: 10,nm: "上海",py: "shanghai"},
-                {id: 20,nm: "广州",py: "guangzhou"},
-                {id: 30,nm: "深圳",py: "shenzhen"},
-                {id: 57,nm: "武汉",py: "wuhan"},
-                {id: 40,nm: "天津",py: "tianjin"},
-                {id: 42,nm: "西安",py: "xian"},
-                {id: 55,nm: "南京",py: "nanjing"},
-                {id: 50,nm: "杭州",py: "hangzhou"},
-                {id: 59,nm: "成都",py: "chengdu"},
-                {id: 45,nm: "重庆",py: "chongqing"},
-            ]
+            var hotList=[]
             // 热门城市筛选
             for(var i=0;i<cities.length;i++){
                 if(cities[i].isHot===1){
@@ -88,14 +74,16 @@ export default {
 
             // 城市首字母索引提取及城市分类
             for(var i=0;i<cities.length;i++){
-                var firstLetter=cities[i].py.substring(0,1).toUpperCase()
-                if(toCom(firstLetter)){ // 当没有该索引，新添加索引
-                    cityList.push({index:firstLetter,list:[{nm:cities[i].nm,id:cities[i].id}]})
+                var firstLetter=cities[i].pinyin.substring(0,1).toUpperCase()
+                if(toCom(firstLetter)){
+                    // 当没有该索引，新添加索引
+                    cityList.push({index:firstLetter,list:[{name:cities[i].name,cityId:cities[i].cityId}]})
                 }
-                else{ // 已有该索引，添加城市名
+                else{
+                    // 已有该索引，添加城市名
                     for(var j=0;j<cityList.length;j++){
                         if(cityList[j].index===firstLetter){
-                            cityList[j].list.push({nm:cities[i].nm,id:cities[i].id})
+                            cityList[j].list.push({name:cities[i].name,cityId:cities[i].cityId})
                         }
                     }
                 }

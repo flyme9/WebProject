@@ -1,80 +1,43 @@
 <template>
     <div class="cinema_body">
-        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
-        <Scroller :key="cinemaList">
-            <ul>
-                <li v-for="item in cinemaList" :key="item.id">
-                    <div>
-                        <span>{{item.nm}}</span>
-                        <span class="q"><span class="price">{{item.sellPrice}}</span> 元起</span>
-                    </div>
-                    <div class="address">
-                        <span>{{item.addr}}</span>
-                        <span>{{item.distance}}</span>
-                    </div>
-                    <div class="card">
-                        <div v-for="(itemCard,key) in item.tag" v-if="itemCard===1" :key="key" :class="key | classCard">
-                            {{key | formatCard}}
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </Scroller>
+        <ul>
+            <li v-for="item in cinemaList" :key="item.cinemaId">
+                <div>
+                    <span>{{item.name}}</span>
+                    <span class="q"><span class="price"> {{item.lowPrice/100}}</span> 元起</span>
+                </div>
+                <div class="address">
+                    <span>{{item.address}}</span>
+                    <span>{{item.distance}}</span>
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
+import http from '@/util/http'
 export default {
     name:'CinemaList',
     data () {
         return {
             cinemaList:[],
-            isLoading:true,
-            prevCityId:-1
-
+            prevCityId:-1,
+            cityId:null
         }
     },
     activated () {
-        var cityId = this.$store.state.city.id
-        if(this.prevCityId === cityId) {return}
-        this.isLoading=true
-        this.axios.get(`/ajax/moreCinemas?movieId=0&day=2021-12-03&offset=0&limit=20&districtId=-1&lineId=-1&hallType=-1&brandId=-1&serviceId=-1&areaId=-1&stationId=-1&item=&updateShowDay=true&reqId=1638535550609&cityId=${cityId}&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10`)
-        .then(res=>{
-            console.log(res.data.cinemas.cinemas)
-            this.cinemaList=res.data.cinemas.cinemas
-            this.isLoading=false
-            this.prevCityId=cityId
+        this.cityId = this.$store.state.city.id
+        if(this.prevCityId === this.cityId) {return}
+        http({
+            url:`/gateway?cityId=${this.cityId}&ticketFlag=1&k=6143709`,
+            headers:{
+                'X-Host': 'mall.film-ticket.cinema.list'
+            }
+        }).then(res=>{
+            this.cinemaList=res.data.data.cinemas
+            this.prevCityId=this.cityId
         })
-    },
-    filters: {
-        formatCard(key){
-            var card=[
-                {key:'allowRefund',value:'退'},
-                {key:'endorse',value:'改签'},
-                {key:'sell',value:'折扣'},
-                {key:'snack',value:'小吃'},
-            ]
-            for(var i=0;i<card.length;i++){
-                if(card[i].key==key){
-                    return card[i].value
-                }
-            }
-            return ''
-        },
-        classCard(key){
-            var card=[
-                {key:'allowRefund',value:'bl'},
-                {key:'endorse',value:'bl'},
-                {key:'sell',value:'or'},
-                {key:'snack',value:'or'},
-            ]
-            for(var i=0;i<card.length;i++){
-                if(card[i].key==key){
-                    return card[i].value
-                }
-            }
-            return ''
-        }
     }
 }
 </script>

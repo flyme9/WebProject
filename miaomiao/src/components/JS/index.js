@@ -17,7 +17,6 @@ export var messageBox =(function(){
         for(var attr in options){
             defaults[attr]=options[attr]
         }
-
         var vm=new MyComponent({
             el:document.createElement('div'),
             data:{

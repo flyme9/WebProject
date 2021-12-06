@@ -1,65 +1,68 @@
 <template>
     <div class="movie_body" ref="movie_body">
-        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
-        <Scroller :key="movieList" :handleToScroll='handleToScroll' :handleToTouchEnd='handleToTouchEnd'>
-            <ul>
-                <li class="pullDown">{{pullDownMsg}}</li>
-                <li v-for="item in movieList" :key="item.id" @click="handleToDetail(item.id)">
-                    <div class="pic_show" >
-                        <img :src="item.img | imgFilter('128.180')">
-                    </div>
-                    <div class="info_list">
-                        <h2>{{item.nm}}
-                            <img v-if="item.ver.startsWith('IMAX 2D')" src="@/assets/v2dimax.png" alt="">
-                            <img v-else-if="item.ver.startsWith('IMAX 3D')" src="@/assets/v3dimax.png" alt="">
-                        </h2>
-                        <p>观众评分<span class="grade">{{item.mk}}</span></p>
-                        <p>{{item.desc}}</p>
-                        <p>{{item.showInfo}}</p>
-                    </div>
-                    <div class="btn_mall" :style="{ backgroundColor:item.showStateButton.color}">
-                        {{item.showStateButton.content}}
-                    </div>
-                </li>
-            </ul>
-        </Scroller>
+        <ul>
+            <li class="pullDown">{{pullDownMsg}}</li>
+            <li v-for="item in movieList" :key="item.filmId" @click="handleToDetail(item.filmId)">
+                <div class="pic_show" >
+                    <img :src="item.poster" alt="img">
+                </div>
+                <div class="info_list">
+                    <h2>{{item.name}}</h2>
+                    <p :style="item.grade?'':'color: transparent;'">观众评分<span class="grade">{{item.grade}}</span></p>
+                    <p>主演:{{item.actors | actorsFilter}}</p>
+                    <p>{{item.nation?item.nation:'暂无'}} | {{item.runtime}}分钟</p>
+                </div>
+                <div class="btn_mall">购票</div>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
+import http from '@/util/http'
+
 export default {
     name:'NowPlaying',
     data(){
         return{
             movieList:[],
+            total:1,
             pullDownMsg:'',
-            isLoading:true,
-            prevCityId:-1
+            prevCityId:-1,
+            cityId:null
         }
     },
-    // 分页懒加载 https://i.maoyan.com/ajax/moreComingList?token=&movieIds=1291076,1357983,30932,1355028,1413176,1289358,1446129,1417305,1355569,1444433&optimus_uuid=04D2B4803BC011ECAE9317E1779F1006015FE837A4444119A1D780B418407A09&optimus_risk_level=71&optimus_code=10
-    
     activated () {
-        var cityId = this.$store.state.city.id
-        if(this.prevCityId === cityId) {return}
-        this.isLoading=true
-        // console.log(112)
-        this.axios.get(`/api/mmdb/movie/v3/list/hot.json?ct=%E4%B8%8A%E6%B5%B7&ci=${cityId}&channelId=4`)
-            .then(res=>{
-                this.movieList=res.data.data.hot
-                // console.log(this.movieList)
-                this.isLoading=false
-                this.prevCityId=cityId
-            })
+        this.cityId = this.$store.state.city.id
+        if(this.prevCityId === this.cityId) {return}
+        http({
+            url:`/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=1&k=4414996`,
+            headers:{
+                'X-Host': 'mall.film-ticket.film.list'
+            }
+        }).then(res=>{
+            this.movieList = res.data.data.films
+            this.total = res.data.data.total
+            this.prevCityId=this.cityId
+        })
     },
     methods:{
         handleToDetail(movieId){
-            // console.log('handleToDetail',id)
             this.$router.push(`/movie/detail/1/${movieId}`)
         },
         handleToScroll(pos){
             if(pos.y>30){
                 this.pullDownMsg='正在更新中'
+                http({
+                    url:`/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=1&k=4414996`,
+                    headers:{
+                        'X-Host': 'mall.film-ticket.film.list'
+                    }
+                }).then(res=>{
+                    this.movieList = res.data.data.films
+                    this.total = res.data.data.total
+                    this.isLoading=false
+                })
             }
         },
         handleToTouchEnd(pos){
@@ -67,7 +70,7 @@ export default {
                 this.pullDownMsg='更新成功'
                 setTimeout(() => {
                     this.pullDownMsg=''
-                }, 3000);
+                }, 1000);
             }
         }
     }
@@ -87,5 +90,5 @@ export default {
     .movie_body .info_list img{ width:50px; position: absolute; right:10px; top: 5px;}
     .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
     .movie_body .btn_pre{ background-color: #3c9fe6;}
-    .movie_body .pullDown{margin: 0;padding: 0;border: none;}
+    .movie_body .pullDown{text-align: center;margin: 0;padding: 0;border: none;}
 </style>

@@ -1,54 +1,52 @@
 <template>
     <div class="movie_body">
-        <van-loading v-if="isLoading" size="28px" vertical>加载中...</van-loading>
-        <Scroller :key="comingList">
-            <ul>
-                <li v-for="item in comingList" :key="item.id" @click="handleToDetail(item.id)">
-                    <div class="pic_show"><img :src="item.img"></div>
-                    <div class="info_list">
-                        <h2>{{item.nm}}</h2>
-                        <p><span class="person">{{item.wish}}</span> 人想看</p>
-                        <p>主演: {{item.star}}</p>
-                        <p>{{item.showInfo}}</p>
-                    </div>
-                    <div class="btn_pre">
-                        预售
-                    </div>
-                </li>
-            </ul>
-        </Scroller>
+        <ul>
+            <li v-for="item in comingList" :key="item.filmId" @click="handleToDetail(item.filmId)">
+                <div class="pic_show"><img :src="item.poster"></div>
+                <div class="info_list">
+                    <h2>{{item.name}}</h2>
+                    <p>主演:{{item.actors | actorsFilter}}</p>
+                    <p>
+                        <span class="person">{{item.category}} | {{item.nation}}</span>
+                    </p>
+                    <p>上映时间：{{item.premiereAt | timerFilter}}</p>
+                </div>
+                <div class="btn_pre">
+                    预售
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script>
+import http from '@/util/http'
 export default {
     name:'ComingSoon',
     data(){
         return{
             comingList:[],
-            isLoading:true,
-            prevCityId:-1
+            prevCityId:-1,
+            cityId:null
         }
     },
     methods:{
         handleToDetail(movieId){
-            // console.log(id)
             this.$router.push(`/movie/detail/2/${movieId}`)
         }
     },
     activated(){
-        var cityId = this.$store.state.city.id
-        if(this.prevCityId === cityId) {return}
-        this.isLoading=true
-        this.axios.get('/data/comingSoon.json')
-            .then(res =>{
-                if(res.data.success){
-                    this.comingList=res.data.coming
-                    this.isLoading=false
-                    this.prevCityId=cityId
-                }
-                // console.log(this.comingList)
-            })
+        this.cityId = this.$store.state.city.id
+        if(this.prevCityId === this.cityId) {return}
+        http({
+            url:`/gateway?cityId=${this.cityId}&pageNum=1&pageSize=10&type=2&k=1471394`,
+            headers:{
+                'X-Host': 'mall.film-ticket.film.list'
+            }
+        }).then(res=>{
+            this.comingList=res.data.data.films
+            this.prevCityId=this.cityId
+        })
     }
 }
 </script>
