@@ -23,7 +23,7 @@ export default {
             
         }
     },
-    mounted () {
+    updated () {
         var scroll = new betterScroll(this.$refs.wrapper,{
             click:true,
             probeType:1

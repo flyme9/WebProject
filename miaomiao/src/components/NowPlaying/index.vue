@@ -1,26 +1,28 @@
 <template>
     <div class="movie_body" ref="movie_body">
-        <ul>
-            <li class="pullDown">{{pullDownMsg}}</li>
-            <li v-for="item in movieList" :key="item.filmId" @click="handleToDetail(item.filmId)">
-                <div class="pic_show" >
-                    <img :src="item.poster" alt="img">
-                </div>
-                <div class="info_list">
-                    <h2>{{item.name}}</h2>
-                    <p :style="item.grade?'':'color: transparent;'">观众评分<span class="grade">{{item.grade}}</span></p>
-                    <p>主演:{{item.actors | actorsFilter}}</p>
-                    <p>{{item.nation?item.nation:'暂无'}} | {{item.runtime}}分钟</p>
-                </div>
-                <div class="btn_mall">购票</div>
-            </li>
-        </ul>
+        <!-- <Scroll :key="movieList"> -->
+            <ul>
+                <li class="pullDown">{{pullDownMsg}}</li>
+                <li v-for="item in movieList" :key="item.filmId" @click="handleToDetail(item.filmId)">
+                    <div class="pic_show" >
+                        <img :src="item.poster" alt="img">
+                    </div>
+                    <div class="info_list">
+                        <h2>{{item.name}}</h2>
+                        <p :style="item.grade?'':'color: transparent;'">观众评分<span class="grade">{{item.grade}}</span></p>
+                        <p>主演:{{item.actors | actorsFilter}}</p>
+                        <p>{{item.nation?item.nation:'暂无'}} | {{item.runtime}}分钟</p>
+                    </div>
+                    <div class="btn_mall">购票</div>
+                </li>
+            </ul>
+        <!-- </Scroll> -->
     </div>
 </template>
 
 <script>
 import http from '@/util/http'
-
+// import Scroll from '@/components/Scroller'
 export default {
     name:'NowPlaying',
     data(){
@@ -31,6 +33,9 @@ export default {
             prevCityId:-1,
             cityId:null
         }
+    },
+    components:{
+        // Scroll
     },
     activated () {
         this.cityId = this.$store.state.city.id
@@ -61,7 +66,6 @@ export default {
                 }).then(res=>{
                     this.movieList = res.data.data.films
                     this.total = res.data.data.total
-                    this.isLoading=false
                 })
             }
         },
