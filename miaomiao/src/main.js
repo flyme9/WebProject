@@ -5,10 +5,11 @@ import store from './store'
 Vue.config.productionTip = false
 
 import Scroller from '@/components/Scroller'
-import Vant from 'vant'
-import 'vant/lib/index.css'
-Vue.use(Vant)
 import moment from 'moment'
+import 'vant/lib/index.css'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 
 Vue.filter('imgFilter',(url,arg)=>{
   // 将图片路径中的w.h替换成指定的数据
@@ -22,7 +23,7 @@ Vue.filter('timerFilter', (data) => {
   moment.locale('zh-cn')
   return moment(data*1000).format('LL')
 })
-Vue.component('Scroller',Scroller)  
+Vue.component('Scroller',Scroller)
 
 new Vue({
   router,

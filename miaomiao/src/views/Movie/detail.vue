@@ -71,7 +71,6 @@ export default {
     },
     components:{
         Header,
-        Swiper,
         detailSwiper,
         DetailSwiperItem
     },

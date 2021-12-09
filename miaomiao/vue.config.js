@@ -1,10 +1,14 @@
 // vue项目配置文件
 module.exports = {
   // 配置公共文件名
-  publicPath:'/miaomiao',
+  // publicPath:'/miaomiao',
   // 配置反向代理
   devServer: {
     proxy: {
+      'api2':{
+        target:'http://localhost:3000',
+        changeOrigin:true
+      },
       '/api': {
         target: 'https://i.maoyan.com',
         changeOrigin: true,

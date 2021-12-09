@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import movieRouter from './movie'
 import cinemaRouter from './cinema'
 import mineRouter from './mine'
+import adminRouter from './admin'
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,7 @@ const routes = [
   movieRouter,
   cinemaRouter,
   mineRouter,
+  adminRouter,
   // 路由重定向
   {
     path:'/*',
@@ -19,7 +21,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: 'miaomaio',
+  // base: 'miaomaio',
   routes
 })
 
