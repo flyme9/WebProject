@@ -6,6 +6,10 @@
         <div>
             <input v-model="password" class="login_text" type="password" placeHolder="请输入您的密码" >
         </div>
+        <div>
+            <input class="login_text" type="text" v-model="verifyImg" placeHolder="请输入图形验证码">
+            <img @click="handleToVerifyImg" src="/api2/users/verifyImg" />
+        </div>
         <div class="login_btn">
             <input type="submit" value="登录" @click="handleToLogin">
         </div>
@@ -24,14 +28,16 @@ export default {
     data () {
         return {
             username:'',
-            password:''
+            password:'',
+            verifyImg:''
         }
     },
     methods:{
         handleToLogin(){
             axios.post('/api2/users/login',{
                 username:this.username,
-                password:this.password
+                password:this.password,
+                verifyImg:this.verifyImg
             })
             .then(res=>{
                 var status = res.data.status
@@ -54,6 +60,9 @@ export default {
                     })
                 }
             })
+        },
+        handleToVerifyImg(event){
+            event.target.src='/api2/users/verifyImg?'+Math.random()
         }
     }
 }

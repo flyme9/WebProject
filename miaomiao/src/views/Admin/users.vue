@@ -1,6 +1,11 @@
 <template>
     <div>
         <el-table :data="nowTabData" border style="width: 100%">
+            <el-table-column prop="userHead" width="80" label="用户头像">
+                <template slot-scope="scope">
+                    <img class="userHead" :src="scope.row.userHead">
+                </template>
+            </el-table-column>
             <el-table-column prop="username" label="用户名"> </el-table-column>
             <el-table-column prop="email" label="用户邮箱"></el-table-column>
             <el-table-column prop="data" label="注册日期"></el-table-column>
@@ -24,7 +29,7 @@ export default {
       return {
           tableData:[],
           currentPage:1,
-          pageSize:9
+          pageSize:6
         }
     },
     mounted(){
@@ -91,5 +96,10 @@ export default {
 <style scoped>
     .page{
         margin-top: 20px;
+    }
+    .userHead{
+        width:40px;
+        height:40px;
+        border-radius: 50%;
     }
 </style>

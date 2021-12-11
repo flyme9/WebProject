@@ -1,7 +1,8 @@
 <template>
     <div class="password_body">
         <div class="password_email">
-            邮箱：<input v-model="email" class="password_text" type="text"><button @click="handleToVerify">发送验证码</button>
+            邮箱：<input v-model="email" class="password_text" type="text">
+            <button :disabled='disabled' @click="handleToVerify">{{verifyInfo}}</button>
         </div>
         <div>
             新密码：<input v-model="password" class="password_text" type="password">
@@ -28,7 +29,9 @@ export default {
         return {
             email:'',
             password:'',
-            verify:''
+            verify:'',
+            verifyInfo:'发送验证码',
+            disabled:false
         }
     },
     methods:{
@@ -36,11 +39,15 @@ export default {
             axios.get(`/api2/users/verify?email=${this.email}`)
               .then(res=>{
                   var status = res.data.status
+                  var This = this
                   if(status === 0){
                       messageBox({
                           title:'验证码',
                           content:'验证码已发送',
-                          ok:'确定'
+                          ok:'确定',
+                          handleOk(){
+                              This.countDown()
+                          }
                       })
                   }
                   else{
@@ -78,6 +85,20 @@ export default {
                       })
                   }
               })
+        },
+        countDown(){
+            this.disabled=true
+            var count = 120
+            var timer = setInterval(() => {
+                count--
+                this.verifyInfo='剩余'+count+'秒'
+                if(count ===0){
+                    this.disabled=false
+                    count = 60
+                    this.verifyInfo='发送验证码'
+                    clearInterval(timer)
+                }
+            }, 1000);
         }
     }
 }
