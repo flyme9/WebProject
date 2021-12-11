@@ -1,4 +1,7 @@
 var mongoose = require('mongoose')
+// var {Head} = require('../untils/config.js')
+var { Head } = require('../untils/config.js');
+var url = require('url')
 mongoose.set('autoIndex',false);
 
 var UserSchema = new mongoose.Schema({
@@ -7,7 +10,8 @@ var UserSchema = new mongoose.Schema({
 	email:{type:String,required:true,index:{unique:true}},
 	data:{type:Date,default:Date.now()},
 	isAdmin:{type:Boolean,default:false},
-	isFreeze:{type:Boolean,default:false}
+	isFreeze:{type:Boolean,default:false},
+	userHead:{type:String,default:url.resolve(Head.baseUrl,'default.jpg')}
 })
 
 var UserModel = mongoose.model('user' , UserSchema);
@@ -53,11 +57,21 @@ var updateFreeze=(email,isFreeze)=>{
 var deleteUser=(email)=>{
 	return UserModel.deleteOne({email})
 }
+
+var updateUserHead = (username,userHead)=>{
+	return UserModel.update({username},{$set:{userHead}})
+	  .then(()=>{
+	  	return true
+	  })
+	  .catch(()=>{
+	  	return false
+	  })}
 module.exports={
 	save,
 	findLogin,
 	updataPassword,
 	usersList,
 	updateFreeze,
-	deleteUser
+	deleteUser,
+	updateUserHead
 }

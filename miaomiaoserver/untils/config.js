@@ -31,12 +31,23 @@ var Email = {
 	get transporter(){
 		return nodemailer.createTransport(this.config);
 	},
+	// 截取4位验证码
 	get verify(){
 		return Math.random().toString().substring(2,6);
+	},
+	// 设置验证码时效性
+	get time(){
+		return Date.now()
 	}
+}
+
+// 默认头像地址
+var Head={
+	baseUrl:'http://localhost:3000/uploads/'
 }
 
 module.exports = {
 	Mongoose,
-	Email
+	Email,
+	Head
 }
